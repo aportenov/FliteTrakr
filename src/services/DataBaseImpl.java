@@ -1,4 +1,7 @@
-package models;
+package services;
+
+import models.Airport;
+import models.Flight;
 
 import java.util.*;
 

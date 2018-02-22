@@ -2,14 +2,13 @@
 import io.Reader;
 import io.Writer;
 import models.Airport;
-import models.DataBase;
+import services.DataBase;
 import models.Flight;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class Interpreter implements Runnable {
 
