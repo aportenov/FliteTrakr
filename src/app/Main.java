@@ -1,9 +1,10 @@
-import io.FileReader;
-import io.ConsoleWriter;
-import io.Reader;
-import io.Writer;
-import services.DataBase;
-import services.DataBaseImpl;
+package app;
+import app.io.ConsoleWriter;
+import app.io.FileReader;
+import app.io.Reader;
+import app.io.Writer;
+import app.services.DataBase;
+import app.services.DataBaseImpl;
 
 public class Main{
 

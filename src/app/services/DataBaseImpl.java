@@ -1,7 +1,7 @@
-package services;
+package app.services;
 
-import models.Airport;
-import models.Flight;
+import app.models.Airport;
+import app.models.Flight;
 
 import java.util.*;
 

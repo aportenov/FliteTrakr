@@ -1,4 +1,4 @@
-package io;
+package app.io;
 
 public class ConsoleWriter implements Writer{
 

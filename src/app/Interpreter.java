@@ -1,9 +1,10 @@
+package app;
 
-import io.Reader;
-import io.Writer;
-import models.Airport;
-import services.DataBase;
-import models.Flight;
+import app.io.Reader;
+import app.io.Writer;
+import app.models.Airport;
+import app.services.DataBase;
+import app.models.Flight;
 
 import java.util.Arrays;
 import java.util.List;

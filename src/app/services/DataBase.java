@@ -1,7 +1,7 @@
-package services;
+package app.services;
 
 
-import models.Airport;
+import app.models.Airport;
 
 import java.util.List;
 

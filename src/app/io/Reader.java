@@ -1,4 +1,4 @@
-package io;
+package app.io;
 
 public interface Reader {
 
