@@ -5,14 +5,12 @@ import java.util.*;
 public class DataBaseImpl implements DataBase {
 
     private Map<String, Airport> airports;
-    private Map<String, String> usedRoutes;
     private List<List<String>> result;
     private int routeCount = 0;
 
     public DataBaseImpl() {
         this.airports = new HashMap<>();
         result = new ArrayList<>();
-        this.usedRoutes = new HashMap<>();
     }
 
     @Override
@@ -42,7 +40,6 @@ public class DataBaseImpl implements DataBase {
     public int findDifferentConnections(String filter, String numberOfConnections,
                                         String departedAirportName, String destinationAirportName) {
         this.routeCount = 0;
-        this.usedRoutes.clear();
         Airport departureAirport = this.airports.get(departedAirportName);
         isAirportsExist(destinationAirportName, departureAirport);
         Map<String, Flight> flightMap = departureAirport.getFlights();
@@ -60,7 +57,6 @@ public class DataBaseImpl implements DataBase {
     @Override
     public List<String> findCheapConnection(String departedAirportName, String destinationAirportName) {
         this.result.clear();
-        this.usedRoutes.clear();
         int minPrice = Integer.MAX_VALUE;
         Airport departureAirport = this.airports.get(departedAirportName);
         isAirportsExist(destinationAirportName, departureAirport);
@@ -115,11 +111,6 @@ public class DataBaseImpl implements DataBase {
             return;
         }
 
-        if (isDuplicateRoute(flights)) {
-            return;
-        }
-
-        this.usedRoutes.put(flights.toString(), "");
         if (currentPrice > price) {
             return;
         }
@@ -147,11 +138,6 @@ public class DataBaseImpl implements DataBase {
             return;
         }
 
-        if (isDuplicateRoute(flights)) {
-            return;
-        }
-
-        this.usedRoutes.put(flights.toString(), "");
         if ((filter.equals("maximum") && flights.size() - 2 > Integer.parseInt(numberOfConnections)) ||
                 (filter.equals("exactly") && flights.size() - 2 > Integer.parseInt(numberOfConnections))) {
             return;
@@ -174,11 +160,6 @@ public class DataBaseImpl implements DataBase {
             removeLast(flights);
         }
     }
-
-    private boolean isDuplicateRoute(List<String> flights) {
-        return this.usedRoutes.containsKey(flights.toString());
-    }
-
 
     private boolean hasBeenThere(String destinationAirportName, List<String> flights, Airport nextAirport) {
         return (flights.subList(0, flights.size() - 1).indexOf(nextAirport.getName()) != -1 &&

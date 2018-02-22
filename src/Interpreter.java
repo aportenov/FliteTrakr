@@ -5,10 +5,11 @@ import models.Airport;
 import models.DataBase;
 import models.Flight;
 
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Interpreter implements Runnable {
 
@@ -25,55 +26,51 @@ public class Interpreter implements Runnable {
 
     @Override
     public void run() {
-        String input;
-        Matcher matcher;
         try {
-            while ((input = reader.readLine()) != null) {
-                try {
-                    String[] formatedInput = input.split(Regex.BY_ROUTE);
-                    if (formatedInput[0].equalsIgnoreCase(Regex.CONNECTIONS)) {
-                        for (int i = 1; i < formatedInput.length; i++) {
-                            String[] flights = formatedInput[i].split(Regex.BY_FLIGHT);
-                            if (flights.length > 2) {
-                                    String departureAirportName = flights[0].trim();
-                                    String destinationAirportName = flights[1].trim();
-                                    int price = Integer.parseInt(flights[2].trim());
+            StringBuilder lines = this.reader.readLine();
+            Arrays.stream(lines.toString().split("\n")).forEach(input -> {
+                Matcher matcher;
+                String[] formatedInput = input.split(Regex.BY_ROUTE);
+                if (formatedInput[0].equalsIgnoreCase(Regex.CONNECTIONS)) {
+                    for (int i = 1; i < formatedInput.length; i++) {
+                        String[] flights = formatedInput[i].split(Regex.BY_FLIGHT);
+                        if (flights.length > 2) {
+                            String departureAirportName = flights[0].trim();
+                            String destinationAirportName = flights[1].trim();
+                            int price = Integer.parseInt(flights[2].trim());
 
-                                    Airport departureAirport = getAirport(departureAirportName);
-                                    Airport destinationAirport = getAirport(destinationAirportName);
-                                    departureAirport.addFlight(new Flight(departureAirport, destinationAirport, price));
-                            }
+                            Airport departureAirport = getAirport(departureAirportName);
+                            Airport destinationAirport = getAirport(destinationAirportName);
+                            departureAirport.addFlight(new Flight(departureAirport, destinationAirport, price));
                         }
-                    } else {
-                        if (input.contains(Regex.PRICE) &&
-                                (matcher = Pattern.compile(Regex.CONNECTION_PRICE).matcher(input)).find()) {
-                            findPrice(matcher.group(0));
-                        } else if (input.contains(Regex.CHEAP) && (
-                                matcher = Pattern.compile(Regex.CHEAP_CONNECTION).matcher(input)).find()) {
-                            findCeapestConnection(matcher.group(1), matcher.group(2));
-                        } else if (input.contains(Regex.DIFFERENT) &&
-                                (matcher = Pattern.compile(Regex.DIFFERENT_CONNECTIONS).matcher(input)).find()) {
-                            findDifferentConnections(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
-                        } else if (input.contains(Regex.FIND_ALL) &&
-                                (matcher = Pattern.compile(Regex.ALL_CONNECTIONS).matcher(input)).find()) {
-                            findAllConnections(matcher.group(1), matcher.group(2), matcher.group(3));
-                        } else {
-                            throw new IllegalArgumentException("Invalid request");
-                        }
-
                     }
-                } catch (IllegalArgumentException e) {
-                    this.writer.writeSingleLine(e.getMessage());
+                } else {
+                    if (input.contains(Regex.PRICE) &&
+                            (matcher = Pattern.compile(Regex.CONNECTION_PRICE).matcher(input)).find()) {
+                        findPrice(matcher.group(0));
+                    } else if (input.contains(Regex.CHEAP) && (
+                            matcher = Pattern.compile(Regex.CHEAP_CONNECTION).matcher(input)).find()) {
+                        findCeapestConnection(matcher.group(1), matcher.group(2));
+                    } else if (input.contains(Regex.DIFFERENT) &&
+                            (matcher = Pattern.compile(Regex.DIFFERENT_CONNECTIONS).matcher(input)).find()) {
+                        findDifferentConnections(matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4));
+                    } else if (input.contains(Regex.FIND_ALL) &&
+                            (matcher = Pattern.compile(Regex.ALL_CONNECTIONS).matcher(input)).find()) {
+                        findAllConnections(matcher.group(1), matcher.group(2), matcher.group(3));
+                    } else {
+                        throw new IllegalArgumentException("Invalid request");
+                    }
+
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            });
+        } catch (IllegalArgumentException e) {
+            this.writer.writeSingleLine(e.getMessage());
         }
     }
 
     private Airport getAirport(String airportName) {
         Airport airport = this.dataBase.getAirport(airportName);
-        if(airport == null){
+        if (airport == null) {
             airport = new Airport(airportName);
             this.dataBase.addAirport(airport);
         }
@@ -89,8 +86,8 @@ public class Interpreter implements Runnable {
                     .append(", ");
         }
 
-        sb.deleteCharAt(sb.length()-2);
-           this.writer.writeSingleLine(sb.toString());
+        sb.deleteCharAt(sb.length() - 2);
+        this.writer.writeSingleLine(sb.toString());
     }
 
     private void findDifferentConnections(String filter, String numberOfConnections,
@@ -100,7 +97,7 @@ public class Interpreter implements Runnable {
     }
 
     private void findCeapestConnection(String departedAirport, String destinationAirport) {
-       List<String> result =  this.dataBase.findCheapConnection(departedAirport, destinationAirport);
+        List<String> result = this.dataBase.findCheapConnection(departedAirport, destinationAirport);
         this.writer.writeSingleLine(String.join(Regex.FLIGHT_SEPARATOR, result));
     }
 
