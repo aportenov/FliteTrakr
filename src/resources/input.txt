@@ -2,7 +2,7 @@ Connections:PDX-NUR-56,  AMS-PDX-617, PDX-AMS-610, AMS-NUE-1, AMS-LHR-43,LHR-HKG
 What is the cheapest connection from AMS to LHR?
 How many different connections with maximum 3 stops exist between NUE and LHR?
 Find all conenctions from NUE to LHR below 1700Euros!
-How many different connections with maximum 1 stops exist between FRA and FRA?
+How many different connections with maximum 1 stops exist between FRR and FRR?
 How many different connections with maximum 3 stops exist between FRA and FRA?
 How many different connections with exactly 1 stops exist between AMS and HKG?
 Find all connections from HKG to AMS below 1000Euros!

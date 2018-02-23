@@ -26,9 +26,9 @@ public class Interpreter implements Runnable {
 
     @Override
     public void run() {
-        try {
-            StringBuilder lines = this.reader.readLine();
-            Arrays.stream(lines.toString().split("\n")).forEach(input -> {
+        StringBuilder lines = this.reader.readLine();
+        Arrays.stream(lines.toString().split("\n")).forEach(input -> {
+            try {
                 Matcher matcher;
                 String[] formatedInput = input.split(Regex.BY_ROUTE);
                 if (formatedInput[0].equalsIgnoreCase(Regex.CONNECTIONS)) {
@@ -62,10 +62,11 @@ public class Interpreter implements Runnable {
                     }
 
                 }
-            });
-        } catch (IllegalArgumentException e) {
-            this.writer.writeSingleLine(e.getMessage());
-        }
+
+            } catch (IllegalArgumentException e) {
+                this.writer.writeSingleLine(e.getMessage());
+            }
+        });
     }
 
     private Airport getAirport(String airportName) {
